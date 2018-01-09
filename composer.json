@@ -1,0 +1,26 @@
+{
+    "name": "hiraeth/chariot",
+    "description": "Chariot for the Hiraeth Nano-Framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name":  "Matthew J. Sahagian",
+            "email": "msahagian@dotink.org",
+            "role":  "Lead Architect / Developer"
+        }
+    ],
+    "require": {
+        "awesomite/chariot": "^0.3.0"
+    },
+    "autoload": {
+        "classmap": ["src/"]
+    },
+    "type": "opus-package",
+    "extra": {
+        "opus": {
+            "hiraeth/app": {
+                "plugin/config": ""
+            }
+        }
+    }
+}
