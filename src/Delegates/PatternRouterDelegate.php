@@ -89,7 +89,7 @@ class PatternRouterDelegate implements Hiraeth\Delegate
 	public function __invoke(Hiraeth\Broker $broker)
 	{
 		if ($this->caching && $this->app->hasFile($this->cacheFile)) {
-			return require $this->app->getFile($this->cacheFile);
+			$router = require $this->app->getFile($this->cacheFile);
 
 		} else {
 			$router = PatternRouter::createDefault();
@@ -128,6 +128,8 @@ class PatternRouterDelegate implements Hiraeth\Delegate
 				);
 			}
 		}
+
+		$broker->share($router);
 
 		return $router;
 	}

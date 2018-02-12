@@ -36,3 +36,11 @@ cache_file = writable/cache/routing.cache
 	delegates = [
 		"Hiraeth\\Chariot\\PatternRouterDelegate"
 	]
+
+[twig]
+
+	functions = {
+		"anchor": {
+			"target": "Hiraeth\\Chariot\\Anchor"
+		}
+	}
