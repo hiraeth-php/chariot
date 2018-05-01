@@ -19,29 +19,26 @@ class Anchor
 	/**
 	 *
 	 */
-	public function __invoke($target, array $params = array(), ParamProvider $provider = NULL)
+	public function __invoke($target, ParamProvider $provider = NULL, array $query = array())
 	{
 		if ($target instanceof RequestInterface) {
 			$link   = $target->getUri()->getPath();
-			$params = array_filter($params + $target->getQueryParams());
+			$query = array_filter($query + $target->getQueryquery());
 
 		} elseif (strpos($target, '/') !== FALSE) {
 			$link   = $target;
-			$params = array_filter($params);
+			$query = array_filter($query);
 
 		} else {
 			$link = $this->router->LinkTo($target);
 
-			foreach ($params as $key => $value) {
-				if (is_numeric($key)) {
-					$link->withParam($value, $provider->getRouteParameter($value));
-					unset($params[$key]);
-				}
+			if ($provider) {
+				$link->withParam('__provider__', $provider);
 			}
 		}
 
-		if ($params) {
-			$link .= '?' . http_build_query($params);
+		if ($query) {
+			$link .= '?' . http_build_query($query);
 		}
 
 		return $link;

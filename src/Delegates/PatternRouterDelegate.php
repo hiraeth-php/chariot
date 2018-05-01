@@ -129,6 +129,7 @@ class PatternRouterDelegate implements Hiraeth\Delegate
 			}
 		}
 
+		$router->addParamDecorator($broker->make('Hiraeth\Chariot\ParamDecorator'));
 		$broker->share($router);
 
 		return $router;
