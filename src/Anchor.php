@@ -43,4 +43,13 @@ class Anchor
 
 		return $link;
 	}
+
+
+	/**
+	 *
+	 */
+	public function make($target, ParamProvider $provider = NULL, array $query = array())
+	{
+		return $this->__invoke($target, $provider, $query);
+	}
 }
