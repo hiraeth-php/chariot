@@ -36,10 +36,12 @@ class Anchor
 			$link = $target;
 		}
 
+		$query = array_filter($query, function($value) {
+			return $value !== NULL;
+		});
+
 		if ($query) {
-			$link .= '?' . http_build_query(array_filter($query, function($value) {
-				return $value !== NULL;
-			}));
+			$link .= '?' . http_build_query($query);
 		}
 
 		return $link;
