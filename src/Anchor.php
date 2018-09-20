@@ -22,23 +22,24 @@ class Anchor
 	public function __invoke($target, ParamProvider $provider = NULL, array $query = array())
 	{
 		if ($target instanceof RequestInterface) {
-			$link   = $target->getUri()->getPath();
-			$query = array_filter($query + $target->getQueryquery());
+			$link  = $target->getUri()->getPath();
+			$query = $query + $target->getQueryquery();
 
-		} elseif (strpos($target, '/') !== FALSE) {
-			$link   = $target;
-			$query = array_filter($query);
-
-		} else {
+		} elseif (strpos($target, '/') === FALSE) {
 			$link = $this->router->LinkTo($target);
 
 			if ($provider) {
 				$link->withParam('__provider__', $provider);
 			}
+
+		} else {
+			$link = $target;
 		}
 
 		if ($query) {
-			$link .= '?' . http_build_query($query);
+			$link .= '?' . http_build_query(array_filter($query, function($value) {
+				return $value !== NULL;
+			}));
 		}
 
 		return $link;
