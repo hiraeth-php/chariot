@@ -41,10 +41,10 @@ class Anchor
 		});
 
 		if ($query) {
-			$link .= '?' . http_build_query($query);
+			$link = $link . '?' . http_build_query($query);
 		}
 
-		return $link;
+		return (string) $link;
 	}
 
 
