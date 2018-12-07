@@ -42,7 +42,7 @@ class RelayMiddleware
 				return $response->withStatus($e->getCode());
 
 			} else {
-				if ($this->app->getEnvironment('DEBUG')) {
+				if ($this->app->getEnvironment('DEBUG', FALSE)) {
 					throw $e;
 				}
 
