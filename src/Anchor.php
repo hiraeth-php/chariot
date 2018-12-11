@@ -23,7 +23,7 @@ class Anchor
 	{
 		if ($target instanceof RequestInterface) {
 			$link  = $target->getUri()->getPath();
-			$query = $query + $target->getQueryquery();
+			$query = $query + $target->getQueryParams();
 
 		} elseif (strpos($target, '/') === FALSE) {
 			$link = $this->router->LinkTo($target);
