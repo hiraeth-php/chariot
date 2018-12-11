@@ -122,10 +122,14 @@ class PatternRouterDelegate implements Hiraeth\Delegate
 			}
 
 			if ($this->caching) {
-				file_put_contents(
-					$this->app->getFile($this->cacheFile, TRUE),
-					sprintf('<?php return %s;', $router->exportToExecutable())
-				);
+//
+//				Chariot Caching is essentially broken as it tries to serialize all objects, including
+//				pattern matchers which sucks for dependencies.
+//
+//				file_put_contents(
+//					$this->app->getFile($this->cacheFile, TRUE),
+//					sprintf('<?php return %s;', $router->exportToExecutable())
+//				);
 			}
 		}
 
@@ -135,3 +139,4 @@ class PatternRouterDelegate implements Hiraeth\Delegate
 		return $router;
 	}
 }
+
