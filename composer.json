@@ -1,15 +1,17 @@
 {
     "name": "hiraeth/chariot",
-    "description": "Chariot for the Hiraeth Nano-Framework",
+    "description": "Chariot router for the Hiraeth Nano Framework",
     "license": "MIT",
     "authors": [
         {
             "name":  "Matthew J. Sahagian",
-            "email": "msahagian@dotink.org",
+            "email": "matthew.sahagian@gmail.com",
             "role":  "Lead Architect / Developer"
         }
     ],
     "require": {
+        "hiraeth/app": "^2.0",
+        "hiraeth/routing": "^1.0",
         "awesomite/chariot": "^0.5.0"
     },
     "autoload": {
@@ -19,7 +21,7 @@
     "extra": {
         "opus": {
             "hiraeth/app": {
-                "plugin/config": ""
+                "config": ""
             }
         }
     }
