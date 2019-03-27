@@ -1,0 +1,22 @@
+[routing]
+
+	;
+	; The prefix for all the routes in this group, changing this will change the base path.
+	;
+
+	prefix = /
+
+
+	;
+	; Route definitions in this group.  Add tab separate lines for each route in the format:
+	;
+	; {route}	{target}	{methods}
+	;
+	; Examples:
+	;
+	; /			ViewHome	["GET"]
+	;
+
+	routes = map(application.route) {
+
+	}
