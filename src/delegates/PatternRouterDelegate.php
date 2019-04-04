@@ -12,24 +12,6 @@ use Awesomite\Chariot\Pattern\PatternRouter;
 class PatternRouterDelegate implements Hiraeth\Delegate
 {
 	/**
-	 *
-	 */
-	protected $app = NULL;
-
-
-	/**
-	 *
-	 */
-	protected $caching = TRUE;
-
-
-	/**
-	 *
-	 */
-	protected $cacheFile = NULL;
-
-
-	/**
 	 * Get the class for which the delegate operates.
 	 *
 	 * @static
@@ -43,32 +25,24 @@ class PatternRouterDelegate implements Hiraeth\Delegate
 
 
 	/**
-	 *
-	 */
-	public function __construct(Hiraeth\Application $app)
-	{
-		$this->app       = $app;
-		$this->caching   = $app->getEnvironment('CACHING', TRUE);
-		$this->cacheFile = $app->getConfig('chariot', 'cache_file', 'storage/cache/' . md5(__CLASS__));
-	}
-
-
-	/**
 	 * Get the instance of the class for which the delegate operates.
 	 *
 	 * @access public
-	 * @param Broker $broker The dependency injector instance
+	 * @param Hiraeth\Application $app The application instance for which the delegate operates
 	 * @return object The instance of the class for which the delegate operates
 	 */
-	public function __invoke(Hiraeth\Broker $broker): object
+	public function __invoke(Hiraeth\Application $app): object
 	{
-		if ($this->caching && $this->app->hasFile($this->cacheFile)) {
-			$router = require $this->app->getFile($this->cacheFile)->getPathname();
+		$caching    = $app->getEnvironment('CACHING', TRUE);
+		$cache_file = $app->getConfig('chariot', 'cache_file', 'storage/cache/' . md5(__CLASS__));
+
+		if ($caching && $app->hasFile($cache_file)) {
+			$router = require $app->getFile($cache_file)->getPathname();
 
 		} else {
 			$router = PatternRouter::createDefault();
 
-			foreach ($this->app->getConfig('*', 'routing', NULL) as $collection => $config) {
+			foreach ($app->getConfig('*', 'routing', NULL) as $collection => $config) {
 
 				$routes   = $config['routes'] ?? [];
 				$prefix   = $config['prefix'] ?? '/';
@@ -84,25 +58,23 @@ class PatternRouterDelegate implements Hiraeth\Delegate
 
 				foreach ($patterns as $hint => $pattern) {
 					if (class_exists($pattern)) {
-						$router->getPatterns()->addPattern($hint, $broker->make($pattern));
+						$router->getPatterns()->addPattern($hint, $app->get($pattern));
 					} else {
 						$router->getPatterns()->addPattern($hint, $pattern);
 					}
 				}
 			}
 
-			if ($this->caching) {
+			if ($caching) {
 				file_put_contents(
-					$this->app->getFile($this->cacheFile, TRUE)->getPathname(),
+					$app->getFile($cache_file, TRUE)->getPathname(),
 					sprintf('<?php return %s;', $router->exportToExecutable())
 				);
 			}
 
-			// $router->addParamDecorator($broker->make('Hiraeth\Chariot\ParamDecorator'));
+			// $router->addParamDecorator($app->get('Hiraeth\Chariot\ParamDecorator'));
 		}
 
-		$broker->share($router);
-
-		return $router;
+		return $app->share($router);
 	}
 }
