@@ -45,9 +45,11 @@ class RouterProxy implements Hiraeth\Routing\RouterInterface
 					return $response->withStatus(404);
 
 				case HttpException::HTTP_METHOD_NOT_ALLOWED:
+					$allowed = $this->router->getAllowedMethods($request->getURI()->getPath());
+
 					return $response
 						->withStatus(405)
-						->withHeader('Allow', implode(', ', $router->getAllowedMethods($path)));
+						->withHeader('Allow', implode(', ', $allowed));
 
 				default:
 					throw $e;
