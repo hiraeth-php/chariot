@@ -32,22 +32,3 @@
 	providers = [
 
 	]
-
-[routing]
-
-	;
-	; Adapters are responsible for taking the route target, the return value of the router's
-	; `match()` method and converting it into a valid PHP callback to be executed by the broker.
-	; This callback is simply referred to as the route callback.
-	;
-
-	adapters = [
-		;
-		; The Chariot RouteAdapter will match a Chariot returned `InternalRouteInterface` and
-		; will attempt to convert the handle to a proper callable.  Additionally, it will register
-		; parameters as aggregated by the route, e.g. `{id}` will become availble as `$id` when
-		; the callable is executed by the routing resolver
-		;
-
-		"Hiraeth\Chariot\RouteAdapter"
-	]
