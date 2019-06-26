@@ -41,20 +41,28 @@ class PatternRouterDelegate implements Hiraeth\Delegate
 
 		} else {
 			$router = PatternRouter::createDefault();
+			$base   = $app->getEnvironment('BASE_PATH', '/');
 
 			foreach ($app->getConfig('*', 'routing', NULL) as $collection => $config) {
-
 				$routes   = $config['routes'] ?? [];
 				$prefix   = $config['prefix'] ?? '/';
-				$patterns = $config['patterns'] ?? [];
 
 				foreach ($routes as $route) {
-					$pattern = '/' . ltrim($prefix . $route['route'], '/');
+					$pattern = preg_replace('#[/]+#', '/', sprintf(
+						'%s/%s/%s',
+						$base,
+						$prefix,
+						$route['route']
+					));
 
 					foreach ($route['methods'] as $method) {
 						$router->addRoute($method, $pattern, $route['target']);
 					}
 				}
+			}
+
+			foreach ($app->getConfig('*', 'chariot', NULL) as $collection => $config) {
+				$patterns = $config['patterns'] ?? [];
 
 				foreach ($patterns as $hint => $pattern) {
 					if (class_exists($pattern)) {
