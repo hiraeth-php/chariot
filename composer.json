@@ -11,8 +11,8 @@
     ],
     "require": {
         "hiraeth/app": "^2.0",
-        "hiraeth/signal": "^1.2",
-        "hiraeth/routing": "^1.0",
+        "hiraeth/signal": "^2.0",
+        "hiraeth/routing": "^2.0",
         "awesomite/chariot": "^0.5.0"
     },
     "autoload": {
